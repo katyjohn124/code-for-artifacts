@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "ChatGPT Code Preview",
+  "version": "1.6",
+  "description": "Preview, copy, and download code from ChatGPT",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "styles.css"
+      ]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "libs/vue.global.js",
+        "libs/react.development.js",
+        "libs/react-dom.development.js",
+        "libs/babel.min.js",
+        "libs/typescript.min.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,307 @@
+.code-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.code-buttons button,
+.preview-controls button {
+  padding: 8px 12px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.code-buttons button {
+  background-color: #4CAF50;
+}
+
+.code-buttons button:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+#code-preview-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(to right, #f0f0f0, #ffffff);
+  border-left: 1px solid #ccc;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+  overflow: hidden;
+}
+
+#code-preview-content {
+  flex-grow: 1;
+  border: none;
+  background-color: white;
+  margin: 10px;
+  border-radius: 6px;
+}
+
+.preview-controls {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+.preview-controls.top {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.preview-controls.bottom {
+  justify-content: flex-start;
+}
+
+.right-controls {
+  display: flex;
+  gap: 10px;
+}
+
+button {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: black;
+  color: white;
+}
+
+.close-btn,
+.copy-btn,
+.download-btn,
+.reload-btn,
+.dark-mode-toggle {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+
+.close-btn:hover,
+.copy-btn:hover,
+.download-btn:hover,
+.reload-btn:hover,
+.dark-mode-toggle:hover {
+  background-color: black;
+  color: white;
+}
+
+.preview-btn {
+  background-color: #4CAF50;
+}
+
+.preview-btn:hover {
+  background-color: #45a049;
+}
+
+.close-btn {
+  background-color: #ff4d4d;
+}
+
+.close-btn:hover {
+  background-color: #ff3333;
+}
+
+.dark-mode-toggle {
+  background-color: #333;
+  color: #fff;
+}
+
+.preview-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  color: black;
+}
+
+.preview-title a {
+  display: flex;
+  align-items: center;
+}
+
+.preview-title svg {
+  width: 24px;
+  height: 24px;
+}
+
+.resizer {
+  width: 5px;
+  height: 100%;
+  background: #ccc;
+  position: absolute;
+  left: 0;
+  top: 0;
+  cursor: ew-resize;
+}
+
+body {
+  transition: width 0.3s ease;
+}
+
+#code-preview-container.dark-mode {
+  background: linear-gradient(to right, #2d2d2d, #1e1e1e);
+  color: #ffffff;
+}
+
+#code-preview-container.dark-mode .preview-controls {
+  background-color: #2d2d2d;
+}
+
+#code-preview-container.dark-mode #code-preview-content {
+  filter: invert(1) hue-rotate(180deg);
+  background-color: #1e1e1e;
+}
+
+#code-preview-container.dark-mode .preview-title {
+  color: white;
+}
+
+/* .copy-btn::after,
+.download-btn::after {
+  content: 'Copied!';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #4CAF50;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+} */
+
+.download-btn::after {
+  content: 'Downloaded!';
+}
+
+.copy-btn.copied::after,
+.download-btn.downloaded::after {
+  transform: translateY(0);
+}
+
+.preview-tabs {
+  display: flex;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.tab-btn {
+  padding: 8px 12px;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  cursor: pointer;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+}
+
+.tab-btn:hover {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+}
+
+#code-preview-container.dark-mode .tab-btn {
+  color: black;
+}
+
+#code-preview-container.dark-mode .tab-btn:hover {
+  color: white;
+}
+
+#code-preview-container.dark-mode .tab-btn.active {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+}
+
+#code-preview-code {
+  color: black;
+  background-color: white;
+  padding: 10px;
+  border-radius: 6px;
+  overflow: auto;
+}
+
+#code-preview-container.dark-mode #code-preview-code {
+  color: white;
+  background-color: #1e1e1e;
+}
+
+/* 确保按钮具有所需的黑白样式 */
+.download-btn,
+.reload-btn,
+.copy-btn,
+.preview-btn,
+.tab-btn,
+.dark-mode-toggle,
+.close-btn {
+  background-color: white;
+  color: black;
+  border: 1px solid black;
+}
+
+.download-btn:hover,
+.reload-btn:hover,
+.copy-btn:hover,
+.preview-btn:hover,
+.tab-btn:hover,
+.dark-mode-toggle:hover,
+.close-btn:hover {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+}
+
+/* 确保图标在按钮内可见 */
+.download-btn svg,
+.reload-btn svg,
+.copy-btn svg,
+.preview-btn svg,
+.tab-btn svg,
+.dark-mode-toggle svg,
+.close-btn svg {
+  fill: black;
+}
+
+.download-btn:hover svg,
+.reload-btn:hover svg,
+.copy-btn:hover svg,
+.preview-btn:hover svg,
+.tab-btn:hover svg,
+.dark-mode-toggle:hover svg,
+.close-btn:hover svg {
+  fill: white;
+}
