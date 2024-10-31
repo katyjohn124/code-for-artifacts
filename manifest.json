@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "ChatGPT Code Preview",
-  "version": "1.6",
+  "name": "Artifacts for ChatGPT",
+  "version": "2.0",
   "description": "Preview, copy, and download code from ChatGPT",
   "permissions": [
     "activeTab",

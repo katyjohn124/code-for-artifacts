@@ -128,6 +128,68 @@ function createButton(text, onClick, className = '') {
   return button;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function togglePreview(code, codeLanguage, cssCode = null) {
+//   let previewContainer = document.getElementById('code-preview-container');
+
+//   if (previewContainer) {
+//     previewContainer.style.transform = 'translateX(100%)';
+//     setTimeout(() => previewContainer.remove(), 300);
+//     document.body.style.width = '100%';
+//     return;
+//   }
+
+//   previewContainer = createPreviewContainer();
+//   document.body.appendChild(previewContainer);
+
+//   const previewIframe = document.createElement('iframe');
+//   previewIframe.id = 'code-preview-content';
+//   previewIframe.style.width = '100%';
+//   previewIframe.style.height = 'calc(100% - 150px)';
+//   previewIframe.style.border = 'none';
+//   previewIframe.style.display = 'block';
+//   previewContainer.appendChild(previewIframe);
+
+//   // Create separate code views for JSX and CSS
+//   const jsxView = document.createElement('pre');
+//   jsxView.id = 'jsx-preview-code';
+//   jsxView.style.display = 'none';
+//   jsxView.textContent = code;
+//   jsxView.style.height = 'calc(50% - 75px)';
+//   jsxView.style.padding = '10px';
+//   jsxView.style.overflow = 'auto';
+//   previewContainer.appendChild(jsxView);
+
+//   if (cssCode) {
+//     const cssView = document.createElement('pre');
+//     cssView.id = 'css-preview-code';
+//     cssView.style.display = 'none';
+//     cssView.textContent = cssCode;
+//     cssView.style.height = 'calc(50% - 75px)';
+//     cssView.style.padding = '10px';
+//     cssView.style.overflow = 'auto';
+//     cssView.style.borderTop = '1px solid #ccc';
+//     previewContainer.appendChild(cssView);
+//   }
+
+//   setupPreviewControls(previewContainer, previewIframe, code, codeLanguage, cssCode);
+//   loadCodeInIframe(previewIframe, code, codeLanguage, cssCode);
+// }
+
+
 function togglePreview(code, codeLanguage, cssCode = null) {
   let previewContainer = document.getElementById('code-preview-container');
 
@@ -149,31 +211,56 @@ function togglePreview(code, codeLanguage, cssCode = null) {
   previewIframe.style.display = 'block';
   previewContainer.appendChild(previewIframe);
 
-  // Create separate code views for JSX and CSS
-  const jsxView = document.createElement('pre');
-  jsxView.id = 'jsx-preview-code';
-  jsxView.style.display = 'none';
-  jsxView.textContent = code;
-  jsxView.style.height = 'calc(50% - 75px)';
-  jsxView.style.padding = '10px';
-  jsxView.style.overflow = 'auto';
-  previewContainer.appendChild(jsxView);
+  // 创建代码视图
+  const codeView = document.createElement('pre');
+  codeView.id = 'code-preview-code';
+  codeView.style.display = 'none';
+  codeView.style.backgroundColor = '#f5f5f5';
+  codeView.style.color = '#333';
+  codeView.style.padding = '15px';
+  codeView.style.borderRadius = '5px';
+  codeView.style.overflow = 'auto';
+  codeView.style.maxHeight = 'calc(100% - 150px)';
+  codeView.style.fontFamily = "Consolas, Monaco, 'Courier New', monospace";
+  codeView.style.fontSize = '14px';
+  codeView.style.lineHeight = '1.5';
+  codeView.style.whiteSpace = 'pre-wrap';
+  codeView.style.wordWrap = 'break-word';
 
-  if (cssCode) {
-    const cssView = document.createElement('pre');
-    cssView.id = 'css-preview-code';
-    cssView.style.display = 'none';
-    cssView.textContent = cssCode;
-    cssView.style.height = 'calc(50% - 75px)';
-    cssView.style.padding = '10px';
-    cssView.style.overflow = 'auto';
-    cssView.style.borderTop = '1px solid #ccc';
-    previewContainer.appendChild(cssView);
-  }
+  const codeElement = document.createElement('code');
+  codeElement.textContent = code;
+
+  codeView.appendChild(codeElement);
+  previewContainer.appendChild(codeView);
 
   setupPreviewControls(previewContainer, previewIframe, code, codeLanguage, cssCode);
   loadCodeInIframe(previewIframe, code, codeLanguage, cssCode);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 function createPreviewContainer() {
   const container = document.createElement('div');
@@ -208,15 +295,89 @@ function createPreviewContainer() {
   return container;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function setupPreviewControls(container, previewIframe, code, codeLanguage, cssCode) {
+//   const jsxView = document.getElementById('jsx-preview-code');
+//   const cssView = document.getElementById('css-preview-code');
+
+//   document.querySelector('.close-btn').addEventListener('click', () => {
+//     container.style.transform = 'translateX(100%)';
+//     setTimeout(() => {
+//       container.remove();
+//       collectedReactCode = { jsx: null, css: null }; // Reset collected code
+//     }, 300);
+//     document.body.style.width = '100%';
+//   });
+
+//   document.querySelector('.reload-btn').addEventListener('click', () => {
+//     loadCodeInIframe(previewIframe, code, codeLanguage, cssCode);
+//   });
+
+//   const previewTab = document.getElementById('preview-tab');
+//   const codeTab = document.getElementById('code-tab');
+
+//   previewTab.addEventListener('click', () => {
+//     previewIframe.style.display = 'block';
+//     jsxView.style.display = 'none';
+//     if (cssView) cssView.style.display = 'none';
+//     previewTab.classList.add('active');
+//     codeTab.classList.remove('active');
+//   });
+
+//   codeTab.addEventListener('click', () => {
+//     previewIframe.style.display = 'none';
+//     jsxView.style.display = 'block';
+//     if (cssView) cssView.style.display = 'block';
+//     codeTab.classList.add('active');
+//     previewTab.classList.remove('active');
+//   });
+
+//   // Add bottom controls for copying and downloading
+//   const bottomControls = document.createElement('div');
+//   bottomControls.className = 'preview-controls bottom';
+//   bottomControls.innerHTML = `
+//     <button class="copy-btn">📋 Copy Code</button>
+//     <button class="download-btn">⬇️ Download Code</button>
+//   `;
+//   container.appendChild(bottomControls);
+
+//   document.querySelector('.copy-btn').addEventListener('click', () => {
+//     const fullCode = cssCode ? `${code}\n\n/* CSS */\n${cssCode}` : code;
+//     copyCode(fullCode);
+//   });
+
+//   document.querySelector('.download-btn').addEventListener('click', () => {
+//     const fullCode = cssCode ? `${code}\n\n/* CSS */\n${cssCode}` : code;
+//     downloadCode(fullCode);
+//   });
+// }
+
+
+
 function setupPreviewControls(container, previewIframe, code, codeLanguage, cssCode) {
-  const jsxView = document.getElementById('jsx-preview-code');
+  const codeView = document.getElementById('code-preview-code');
   const cssView = document.getElementById('css-preview-code');
 
   document.querySelector('.close-btn').addEventListener('click', () => {
     container.style.transform = 'translateX(100%)';
     setTimeout(() => {
       container.remove();
-      collectedReactCode = { jsx: null, css: null }; // Reset collected code
+      collectedReactCode = { jsx: null, css: null }; // 重置已收集的代码
     }, 300);
     document.body.style.width = '100%';
   });
@@ -230,7 +391,7 @@ function setupPreviewControls(container, previewIframe, code, codeLanguage, cssC
 
   previewTab.addEventListener('click', () => {
     previewIframe.style.display = 'block';
-    jsxView.style.display = 'none';
+    codeView.style.display = 'none';
     if (cssView) cssView.style.display = 'none';
     previewTab.classList.add('active');
     codeTab.classList.remove('active');
@@ -238,13 +399,13 @@ function setupPreviewControls(container, previewIframe, code, codeLanguage, cssC
 
   codeTab.addEventListener('click', () => {
     previewIframe.style.display = 'none';
-    jsxView.style.display = 'block';
+    codeView.style.display = 'block';
     if (cssView) cssView.style.display = 'block';
     codeTab.classList.add('active');
     previewTab.classList.remove('active');
   });
 
-  // Add bottom controls for copying and downloading
+  // 添加底部控制按钮用于复制和下载
   const bottomControls = document.createElement('div');
   bottomControls.className = 'preview-controls bottom';
   bottomControls.innerHTML = `
@@ -279,7 +440,27 @@ function setupPreviewControls(container, previewIframe, code, codeLanguage, cssC
 
 
 
-// 修改 loadCodeInIframe 函数的实现
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function loadCodeInIframe(iframe, code, codeLanguage, cssCode = null) {
   if (codeLanguage.includes('language-react') || codeLanguage.includes('language-jsx')) {
     // 处理可能的 import 语句
