@@ -31,7 +31,9 @@
         "libs/react.development.js",
         "libs/react-dom.development.js",
         "libs/babel.min.js",
-        "libs/typescript.min.js"
+        "libs/typescript.min.js",
+        "libs/highlight.min.js",
+        "libs/highlight.default.min.css"
       ],
       "matches": [
         "<all_urls>"

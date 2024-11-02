@@ -112,7 +112,7 @@ function togglePreview(code, codeLanguage, cssCode = null) {
     return;
   }
 
-  previewContainer = createPreviewContainer();
+  previewContainer = createPreviewContainer(codeLanguage, code);  // 传入代码内容
   document.body.appendChild(previewContainer);
 
   const previewIframe = document.createElement('iframe');
@@ -151,7 +151,11 @@ function togglePreview(code, codeLanguage, cssCode = null) {
 
 
 
-function createPreviewContainer() {
+
+
+
+
+function createPreviewContainer(codeLanguage, code) {
   const container = document.createElement('div');
   container.id = 'code-preview-container';
   container.style.position = 'fixed';
@@ -165,11 +169,41 @@ function createPreviewContainer() {
   container.style.overflow = 'auto';
   container.style.transition = 'transform 0.3s ease-in-out';
 
+
+
+  // 动态设置标题
+  let title = 'Code Preview';
+
+  // 检查代码是否包含HTML、CSS和JavaScript的组合
+  function isWebPageCode(code) {
+    const hasHTML = /<\w+>.*<\/\w+>/s.test(code);
+    const hasCSS = /{[\s\S]*}/.test(code) && /style|@media|@keyframes/.test(code);
+    const hasJS = /function|var|let|const|if|for|while/.test(code);
+    return hasHTML && (hasCSS || hasJS);
+  }
+
+  if (codeLanguage.includes('language-react') || codeLanguage.includes('language-jsx')) {
+    title = 'React Component Preview';
+  } else if (isWebPageCode(code)) {  // 使用代码内容判断是否为网页代码
+    title = 'Web Page Preview';
+  } else if (codeLanguage.includes('language-html')) {
+    title = 'HTML Preview';
+  } else if (codeLanguage.includes('language-vue')) {
+    title = 'Vue Preview';
+  } else if (codeLanguage.includes('language-css')) {
+    title = 'CSS Preview';
+  } else if (codeLanguage.includes('language-javascript') || codeLanguage.includes('language-js')) {
+    title = 'JavaScript Preview';
+  }
+
+
+
+
   // Add top controls
   const topControls = document.createElement('div');
   topControls.className = 'preview-controls top';
   topControls.innerHTML = `
-    <div class="preview-title">React Component Preview</div>
+    <div class="preview-title">${title}</div>
     <div class="preview-tabs">
       <button id="preview-tab" class="tab-btn active">Preview</button>
       <button id="code-tab" class="tab-btn">Code</button>
@@ -183,6 +217,11 @@ function createPreviewContainer() {
 
   return container;
 }
+
+
+
+
+
 
 
 
