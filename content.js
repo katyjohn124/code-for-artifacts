@@ -152,9 +152,6 @@ function togglePreview(code, codeLanguage, cssCode = null) {
 
 
 
-
-
-
 function createPreviewContainer(codeLanguage, code) {
   const container = document.createElement('div');
   container.id = 'code-preview-container';
@@ -220,11 +217,6 @@ function createPreviewContainer(codeLanguage, code) {
 
 
 
-
-
-
-
-
 function setupPreviewControls(container, previewIframe, code, codeLanguage, cssCode) {
   const codeView = document.getElementById('code-preview-code');
   const cssView = document.getElementById('css-preview-code');
@@ -285,7 +277,9 @@ function setupPreviewControls(container, previewIframe, code, codeLanguage, cssC
 
 
 function loadCodeInIframe(iframe, code, codeLanguage, cssCode = null) {
-  if (codeLanguage.includes('language-react') || codeLanguage.includes('language-jsx')) {
+  if (codeLanguage.includes('language-vue')) {
+    loadVueComponent(iframe, code);
+  } else if (codeLanguage.includes('language-react') || codeLanguage.includes('language-jsx')) {
     // 处理可能的 import 语句
     const codeWithoutImports = code.replace(/import\s+.*?from\s+['"].*?['"];?\s*/g, '');
 
@@ -385,6 +379,141 @@ function loadCodeInIframe(iframe, code, codeLanguage, cssCode = null) {
 }
 
 
+// 在 content.js 文件底部添加以下代码用于处理 Vue 组件
+
+// function loadVueComponent(iframe, code) {
+//   // 解析 Vue 单文件组件
+//   const templateMatch = code.match(/<template>([\s\S]*)<\/template>/);
+//   const scriptMatch = code.match(/<script>([\s\S]*)<\/script>/);
+//   const styleMatch = code.match(/<style>([\s\S]*)<\/style>/);
+
+//   const template = templateMatch ? templateMatch[1].trim() : '';
+//   const script = scriptMatch ? scriptMatch[1].trim() : '';
+//   const style = styleMatch ? styleMatch[1].trim() : '';
+
+//   // 构建完整的 HTML 文档
+//   const iframeContent = `
+//     <!DOCTYPE html>
+//     <html>
+//     <head>
+//       <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.js"></script>
+//       <style>${style}</style>
+//     </head>
+//     <body>
+//       <div id="app">
+//         ${template}
+//       </div>
+//       <script>
+//         ${script.replace('export default', 'const component =')}
+//         const app = Vue.createApp(component);
+//         app.mount('#app');
+//       </script>
+//     </body>
+//     </html>
+//   `;
+
+//   iframe.srcdoc = iframeContent;
+// }
+
+
+function loadVueComponent(iframe, code) {
+  // 解析 Vue 单文件组件
+  const templateMatch = code.match(/<template>([\s\S]*)<\/template>/);
+  const scriptMatch = code.match(/<script>([\s\S]*)<\/script>/);
+  const styleMatch = code.match(/<style[^>]*>([\s\S]*)<\/style>/);
+
+  const template = templateMatch ? templateMatch[1].trim() : '';
+  const script = scriptMatch ? scriptMatch[1].trim() : '';
+  const style = styleMatch ? styleMatch[1].trim() : '';
+
+  // 确保在 Vue 应用创建前组件已定义
+  const processedScript = script
+    .replace('export default', 'const componentDefinition =') // 修改变量名避免冲突
+    .replace(/import\s+.*['"].*['"]/g, ''); // 移除 import 语句
+
+  // 构建完整的 HTML 文档
+  const iframeContent = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/3.3.4/vue.global.js"></script>
+      <style>
+        /* 重置默认样式 */
+        * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        /* 应用组件样式 */
+        ${style}
+      </style>
+    </head>
+    <body>
+      <div id="app">${template}</div>
+
+      <script>
+        // 等待 Vue 加载完成
+        window.onload = () => {
+          try {
+            // 先执行组件定义
+            ${processedScript}
+            
+            // 确保组件定义存在
+            if (typeof componentDefinition === 'undefined') {
+              throw new Error('Component definition not found');
+            }
+
+            // 创建 Vue 应用
+            const app = Vue.createApp(componentDefinition);
+            
+            // 挂载应用
+            app.mount('#app');
+          } catch (error) {
+            // 显示错误信息
+            document.body.innerHTML = \`
+              <div style="color: red; padding: 20px;">
+                <h3>Error rendering Vue component:</h3>
+                <pre>\${error.toString()}</pre>
+              </div>
+            \`;
+            console.error('Vue rendering error:', error);
+          }
+        };
+      </script>
+    </body>
+    </html>
+  `;
+
+  // 设置 iframe 内容
+  iframe.srcdoc = iframeContent;
+
+  // 更新代码视图，确保代码高亮
+  const codeView = document.getElementById('code-preview-code');
+  if (codeView) {
+    // 清除之前的内容
+    codeView.innerHTML = '';
+
+    // 创建新的代码元素
+    const codeElement = document.createElement('code');
+    codeElement.className = 'language-vue';  // 添加语言类名
+    codeElement.textContent = code;
+
+    // 设置代码视图样式
+    codeView.style.backgroundColor = '#1e1e1e';
+    codeView.style.color = '#d4d4d4';
+    codeView.style.padding = '15px';
+    codeView.style.borderRadius = '5px';
+    codeView.style.overflow = 'auto';
+    codeView.style.height = 'calc(100% - 150px)';
+
+    codeView.appendChild(codeElement);
+  }
+
+
+}
 
 
 // 添加新的辅助函数来处理React组件代码
@@ -451,15 +580,36 @@ function showTemporaryMessage(message) {
   setTimeout(() => messageDiv.remove(), 3000);
 }
 
-// Initialize
+// // Initialize
+// function addButtonsToExistingCodeBlocks() {
+//   document.querySelectorAll('pre').forEach(preElement => {
+//     const codeElement = preElement.querySelector('code');
+//     if (codeElement && !codeElement.dataset.buttonsAdded) {
+//       addButtons(codeElement);
+//     }
+//   });
+// }
+
+
 function addButtonsToExistingCodeBlocks() {
   document.querySelectorAll('pre').forEach(preElement => {
     const codeElement = preElement.querySelector('code');
     if (codeElement && !codeElement.dataset.buttonsAdded) {
       addButtons(codeElement);
+
+      // 添加以下代码来确保代码内容被正确加载
+      const previewBtn = codeElement.parentNode.querySelector('.preview-btn');
+      if (previewBtn) {
+        previewBtn.addEventListener('click', () => {
+          const code = codeElement.textContent;
+          const language = codeElement.className;
+          togglePreview(code, language);
+        });
+      }
     }
   });
 }
+
 
 const observer = new MutationObserver((mutations) => {
   mutations.forEach(mutation => {
@@ -479,4 +629,9 @@ const observer = new MutationObserver((mutations) => {
 });
 
 observer.observe(document.body, { childList: true, subtree: true });
-setInterval(addButtonsToExistingCodeBlocks, 1000);
+// setInterval(addButtonsToExistingCodeBlocks, 1000);
+
+
+// 增加轮询间隔，确保新生成的代码块能被捕获
+setInterval(addButtonsToExistingCodeBlocks, 500); // 将间隔从1000ms改为500ms
+
