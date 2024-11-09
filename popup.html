@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            width: 400px;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            background: #f8f9fa;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .header img {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 20px;
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .notice {
+            padding: 12px 15px;
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 4px;
+            color: #856404;
+        }
+
+        .notice .en {
+            font-size: 13px;
+            color: #987432;
+            margin-top: 5px;
+        }
+
+        .requirements {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .requirements h2 {
+            margin: 0 0 12px 0;
+            font-size: 15px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .requirements h2::before {
+            content: "🔧";
+        }
+
+        .requirements ul {
+            margin: 0;
+            padding-left: 20px;
+            font-size: 14px;
+        }
+
+        .requirements li {
+            margin-bottom: 8px;
+        }
+
+        .requirements .en {
+            color: #666;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+        .instructions {
+            background-color: white;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .step-container {
+            padding: 15px;
+        }
+
+        .step-container h2 {
+            margin: 0 0 15px 0;
+            font-size: 15px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .step-container h2::before {
+            content: "📝";
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .step::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 2px;
+            width: 18px;
+            height: 18px;
+            background: #007bff;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .step .cn {
+            color: #333;
+            font-size: 14px;
+        }
+
+        .step .en {
+            color: #666;
+            font-size: 13px;
+        }
+
+        .attribution {
+            font-size: 12px;
+            color: #6c757d;
+            text-align: center;
+            margin-top: 5px;
+            padding-top: 15px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #0056b3;
+            text-decoration: none;
+        }
+
+        .version {
+            display: inline-block;
+            padding: 2px 6px;
+            background: #e9ecef;
+            border-radius: 4px;
+            margin-top: 5px;
+            font-size: 11px;
+            color: #666;
+        }
+
+        .tutorial {
+            background-color: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+            margin-bottom: 15px;
+        }
+
+        .tutorial h2 {
+            margin: 0 0 12px 0;
+            font-size: 15px;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tutorial h2::before {
+            content: "📖";
+        }
+
+        .tutorial .content {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .tutorial .cn {
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .tutorial .en {
+            color: #666;
+        }
+
+        .warning {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #b8daff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <div class="header">
+            <img src="images/icons8-generated-photos-48.png" alt="Extension Logo">
+            <h1>AI Code Preview</h1>
+        </div>
+
+
+        <div class="notice">
+            <div class="cn">⚠️ 请确保已安装并启用以下扩展程序以获得最佳体验</div>
+            <div class="en">Please ensure the following extension is installed and enabled for the best experience</div>
+        </div>
+
+        <div class="requirements">
+            <h2>必需扩展 Required Extension</h2>
+            <ul>
+                <li>
+                    <a href="https://chromewebstore.google.com/detail/csp-unblock/lkbelpgpclajeekijigjffllhigbhobd"
+                        target="_blank">CSP Unblock</a>
+                    <div class="cn">用于绕过内容安全策略限制</div>
+                    <div class="en">For bypassing Content Security Policy restrictions</div>
+                </li>
+            </ul>
+        </div>
+
+        <div class="instructions">
+            <div class="step-container">
+                <h2>使用说明 Instructions</h2>
+                <div class="step">
+                    <div class="cn">安装 CSP Unblock 扩展</div>
+                    <div class="en">Install the CSP Unblock extension</div>
+                </div>
+                <div class="step">
+                    <div class="cn">点击浏览器工具栏中的扩展图标，为 chat.openai.com 启用它</div>
+                    <div class="en">Click the extension icon in toolbar to activate it for chat.openai.com</div>
+                </div>
+                <div class="step">
+                    <div class="cn">CSP Unblock 将移除安全策略相关响应头，使本扩展程序能够正常运行</div>
+                    <div class="en">CSP Unblock will remove security policy headers to allow this extension to work
+                        properly</div>
+                </div>
+                <div class="step">
+                    <div class="cn">刷新 ChatGPT 页面以使更改生效</div>
+                    <div class="en">Refresh the ChatGPT page for changes to take effect</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tutorial">
+            <h2>使用教程 Usage Guide</h2>
+            <div class="content">
+                <div class="cn">
+                    本程序支持以下代码预览：
+                    • HTML+CSS+JS 组合代码：直接点击 "Preview Code" 按钮
+                    • React 组件（App.js + App.css）：依次点击 "Collect CSS" 和 "Collect JSX"，预览窗口将自动打开
+                    • Vue 单文件组件：直接点击 "Preview Code" 按钮
+                </div>
+                <div class="en">
+                    This extension supports preview for:
+                    • HTML+CSS+JS combination: Click "Preview Code" directly
+                    • React components (App.js + App.css): Click "Collect CSS" then "Collect JSX", preview window will
+                    open automatically
+                    • Vue single-file components: Click "Preview Code" directly
+                </div>
+
+                <div class="warning">
+                    <div class="cn">
+                        ⚠️ 温馨提示：目前在预览新生成的代码时需要刷新页面以确保正常渲染。建议在提问时详细描述需求，以便一次性生成完整代码。此问题正在修复中，敬请期待。
+                    </div>
+                    <div class="en">
+                        ⚠️ Note: Currently, please refresh the page before previewing newly generated code. For better
+                        experience, provide detailed requirements in your prompt. This issue is being addressed, stay
+                        tuned.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="attribution">
+            <div>
+                <a target="_blank" href="https://icons8.com/icon/ruWDBq4NQd5k/generated-photos">Generated Photos</a>
+                icon by
+                <a target="_blank" href="https://icons8.com">Icons8</a>
+            </div>
+            <div class="version">Version 2.0</div>
+        </div>
+
+
+    </div>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-# Artifacts for ChatGPT Extension
+# AI Code Preview Extension
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -19,7 +19,7 @@
 
 ### 项目简介
 
-这是一个专为 ChatGPT 用户设计的 Chrome 扩展程序,能够实时预览、收集和运行html+css+js和 React 组件代码与 CSS 样式。通过简单的点击操作,即可实现代码的预览、复制和下载等功能。
+这是一个专为 AI 对话平台用户设计的 Chrome 扩展程序,能够实时预览、收集和运行html+css+js和 React 组件代码与 CSS 样式。通过简单的点击操作,即可实现代码的预览、复制和下载等功能。
 
 ### 功能特性
 
@@ -89,7 +89,7 @@
 
 ### Introduction
 
-A Chrome extension designed for ChatGPT users that enables real-time preview, collection and execution of React component code and CSS styles. Users can preview, copy and download code with simple clicks.
+A Chrome extension designed for AI platform users that enables real-time preview, collection and execution of React component code and CSS styles. Users can preview, copy and download code with simple clicks.
 
 ### Features
 
@@ -153,6 +153,9 @@ A Chrome extension designed for ChatGPT users that enables real-time preview, co
 For issues or suggestions:
 - Submit GitHub Issues
 - Email maintainer
+
+### Icons
+Icons used in this project are from Icons8, under their usage terms and conditions.
 
 ### License
 
