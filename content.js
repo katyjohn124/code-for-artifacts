@@ -28,28 +28,37 @@ function isCSSCode(code) {
       code.includes('width') || code.includes('height') || code.includes('margin'));
 }
 
+
+
 function addButtons(codeBlock) {
   if (codeBlock.dataset.buttonsAdded) return;
 
-  const code = codeBlock.textContent;
+  const code = codeBlock.textContent.trim();
+  if (!code) return;
+
   const isReact = isReactCode(code);
   const isCSS = isCSSCode(code);
 
   const buttonsDiv = document.createElement('div');
   buttonsDiv.className = 'code-buttons';
 
-  // For React/JSX code, add collect button
   if (isReact || isCSS) {
     const collectBtn = createButton(
       isReact ? 'Collect JSX' : 'Collect CSS',
-      () => collectCode(code, isReact ? 'jsx' : 'css'),
+      function () {
+        const latestCode = codeBlock.textContent.trim(); // 获取最新的代码
+        collectCode(latestCode, isReact ? 'jsx' : 'css');
+      },
       'collect-btn'
     );
     buttonsDiv.append(collectBtn);
   }
 
   const previewBtn = createButton('Preview Code',
-    () => togglePreview(code, codeBlock.className),
+    function () {
+      const latestCode = codeBlock.textContent.trim(); // 获取最新的代码
+      togglePreview(latestCode, codeBlock.className);
+    },
     'preview-btn'
   );
 
@@ -57,6 +66,7 @@ function addButtons(codeBlock) {
   codeBlock.parentNode.insertBefore(buttonsDiv, codeBlock.nextSibling);
   codeBlock.dataset.buttonsAdded = 'true';
 }
+
 
 
 // 修改 collectCode 函数
@@ -537,35 +547,16 @@ function showTemporaryMessage(message) {
 
 
 
-function addButtonsToExistingCodeBlocks() {
-  document.querySelectorAll('pre').forEach(preElement => {
-    const codeElement = preElement.querySelector('code');
-    if (codeElement && !codeElement.dataset.buttonsAdded) {
-      addButtons(codeElement);
-
-      // 添加以下代码来确保代码内容被正确加载
-      const previewBtn = codeElement.parentNode.querySelector('.preview-btn');
-      if (previewBtn) {
-        previewBtn.addEventListener('click', () => {
-          const code = codeElement.textContent;
-          const language = codeElement.className;
-          togglePreview(code, language);
-        });
-      }
-    }
-  });
-}
-
-
 const observer = new MutationObserver((mutations) => {
   mutations.forEach(mutation => {
     if (mutation.type === 'childList') {
       mutation.addedNodes.forEach(node => {
         if (node.nodeType === Node.ELEMENT_NODE) {
-          const codeElements = node.querySelectorAll('pre code');
-          codeElements.forEach(codeElement => {
-            if (!codeElement.dataset.buttonsAdded) {
-              addButtons(codeElement);
+          const codeBlocks = node.querySelectorAll('pre code');
+          codeBlocks.forEach(codeBlock => {
+            if (!codeBlock.dataset.buttonsAdded) {
+              // 为每个新的代码块添加独立的观察者
+              observeCodeBlockContent(codeBlock);
             }
           });
         }
@@ -574,10 +565,44 @@ const observer = new MutationObserver((mutations) => {
   });
 });
 
+
+
 observer.observe(document.body, { childList: true, subtree: true });
 // setInterval(addButtonsToExistingCodeBlocks, 1000);
 
 
-// 增加轮询间隔，确保新生成的代码块能被捕获
-setInterval(addButtonsToExistingCodeBlocks, 500); // 将间隔从1000ms改为500ms
+
+// 为代码块添加内容观察者的函数
+function observeCodeBlockContent(codeBlock) {
+  let contentChanged = false;
+  let lastContent = codeBlock.textContent.trim();
+
+  const codeObserver = new MutationObserver(() => {
+    const currentContent = codeBlock.textContent.trim();
+    if (currentContent !== lastContent) {
+      lastContent = currentContent;
+      contentChanged = true;
+      return;
+    }
+
+    if (contentChanged) {
+      // 内容已稳定，处理代码块
+      codeObserver.disconnect();
+      addButtons(codeBlock);
+    }
+  });
+
+  // 配置观察选项，监听子节点和字符数据的变化
+  codeObserver.observe(codeBlock, { childList: true, subtree: true, characterData: true });
+
+  // 设置超时，防止无限等待
+  setTimeout(() => {
+    codeObserver.disconnect();
+    if (!codeBlock.dataset.buttonsAdded) {
+      addButtons(codeBlock);
+    }
+  }, 3000); // 3秒后强制处理
+}
+
+
 
