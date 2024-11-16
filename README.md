@@ -4,6 +4,9 @@
 
 [English](#english) | [中文](#chinese)
 
+[![项目演示视频](https://img.youtube.com/vi/zQ-aICttHVA/0.jpg)](https://youtu.be/zQ-aICttHVA)
+
+
 ## 目录 (Contents)
 
 - [项目简介 (Introduction)](#项目简介-introduction)
