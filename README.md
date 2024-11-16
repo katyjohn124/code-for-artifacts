@@ -97,7 +97,7 @@ AI Code Preview 是一个专为 AI 对话平台用户设计的 Chrome 扩展程�
 
 - **打赏**：
   - [PayPal](https://paypal.me/JohnsonNong?country.x=C2&locale.x=en_US)
-  - ![WeChat Pay](images/微信图片_20241116205816.jpg)
+  - <img src="images/微信图片_20241116205816.jpg" alt="WeChat Pay" width="200">
 
 - **贡献代码**：
   - Fork 本项目
@@ -187,7 +187,6 @@ We welcome everyone to actively maintain and develop this project. If you find t
 
 - **Donate**:
   - [PayPal](https://paypal.me/JohnsonNong?country.x=C2&locale.x=en_US)
-  - ![WeChat Pay](images/微信图片_20241116205816.jpg)
 
 - **Contribute Code**:
   - Fork this project
