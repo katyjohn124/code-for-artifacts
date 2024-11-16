@@ -30,6 +30,24 @@ function isCSSCode(code) {
 
 
 
+// 检测 Python 代码的函数
+function isPythonCode(code) {
+  const pythonPatterns = [
+    /def\s+\w+\s*\(/,          // def 函数定义
+    /class\s+\w+\s*:/,         // class 类定义
+    /import\s+[\w\.]+/,        // import 语句
+    /print\(.+\)/,             // print 函数
+    /^#.*$/,                   // 注释行
+    /if\s+__name__\s*==\s*['"]__main__['"]:/, // 主程序入口
+  ];
+
+  return pythonPatterns.some(pattern => pattern.test(code));
+}
+
+
+
+
+
 function addButtons(codeBlock) {
   if (codeBlock.dataset.buttonsAdded) return;
 
@@ -38,6 +56,7 @@ function addButtons(codeBlock) {
 
   const isReact = isReactCode(code);
   const isCSS = isCSSCode(code);
+  const isPython = isPythonCode(code);
 
   const buttonsDiv = document.createElement('div');
   buttonsDiv.className = 'code-buttons';
@@ -54,6 +73,16 @@ function addButtons(codeBlock) {
     buttonsDiv.append(collectBtn);
   }
 
+
+  // if (isPython) {
+  //   const runPythonBtn = createButton('Run Python', function () {
+  //     const latestCode = codeBlock.textContent.trim();
+  //     runPythonCode(latestCode);
+  //   }, 'run-python-btn');
+  //   buttonsDiv.append(runPythonBtn);
+  // }
+
+
   const previewBtn = createButton('Preview Code',
     function () {
       const latestCode = codeBlock.textContent.trim(); // 获取最新的代码
@@ -66,6 +95,8 @@ function addButtons(codeBlock) {
   codeBlock.parentNode.insertBefore(buttonsDiv, codeBlock.nextSibling);
   codeBlock.dataset.buttonsAdded = 'true';
 }
+
+
 
 
 
@@ -108,6 +139,10 @@ function createButton(text, onClick, className = '') {
   if (className) button.className = className;
   return button;
 }
+
+
+
+
 
 
 
@@ -161,6 +196,8 @@ function togglePreview(code, codeLanguage, cssCode = null) {
 
 
 
+
+
 function createPreviewContainer(codeLanguage, code) {
   const container = document.createElement('div');
   container.id = 'code-preview-container';
@@ -188,7 +225,10 @@ function createPreviewContainer(codeLanguage, code) {
     return hasHTML && (hasCSS || hasJS);
   }
 
-  if (codeLanguage.includes('language-react') || codeLanguage.includes('language-jsx')) {
+
+  if (codeLanguage.includes('language-python')) {
+    title = 'Python Preview';
+  } else if (codeLanguage.includes('language-react') || codeLanguage.includes('language-jsx')) {
     title = 'React Component Preview';
   } else if (isWebPageCode(code)) {  // 使用代码内容判断是否为网页代码
     title = 'Web Page Preview';
@@ -223,6 +263,10 @@ function createPreviewContainer(codeLanguage, code) {
 
   return container;
 }
+
+
+
+
 
 
 
@@ -285,8 +329,57 @@ function setupPreviewControls(container, previewIframe, code, codeLanguage, cssC
 
 
 
+
+
 function loadCodeInIframe(iframe, code, codeLanguage, cssCode = null) {
-  if (codeLanguage.includes('language-vue')) {
+
+  if (codeLanguage.includes('language-python')) {
+    const pyscriptCssUrl = chrome.runtime.getURL('libs/pyscript.css');
+    const pyscriptJsUrl = chrome.runtime.getURL('libs/pyscript.js');
+    const pyodideJsUrl = chrome.runtime.getURL('libs/pyodide/pyodide.js');
+
+    const iframeContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <link rel="stylesheet" href="${pyscriptCssUrl}" />
+        <script defer src="${pyscriptJsUrl}"></script>
+        <style>
+          /* 添加基础样式 */
+          body {
+            margin: 0;
+            padding: 20px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+          }
+          py-script {
+            font-family: Consolas, Monaco, monospace;
+            font-size: 14px;
+          }
+        </style>
+      </head>
+      <body>
+        <py-config>
+          [experimental]
+          # 启用 micropip 以安装包
+          install-wheel = true
+
+          [interpreter]
+          src = "${pyodideJsUrl}"
+          # 添加您需要的包
+          packages = [
+            "micropip"
+          ]
+        </py-config>
+        <py-script>
+${code}
+        </py-script>
+        <div id="output"></div>
+      </body>
+      </html>
+    `;
+    iframe.srcdoc = iframeContent;
+  } else if (codeLanguage.includes('language-vue')) {
     loadVueComponent(iframe, code);
   } else if (codeLanguage.includes('language-react') || codeLanguage.includes('language-jsx')) {
     // 处理可能的 import 语句

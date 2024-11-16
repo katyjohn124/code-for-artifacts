@@ -42,7 +42,10 @@
         "libs/babel.min.js",
         "libs/typescript.min.js",
         "libs/highlight.min.js",
-        "libs/highlight.default.min.css"
+        "libs/highlight.default.min.css",
+        "libs/pyscript.js",
+        "libs/pyscript.css",
+        "libs/pyodide/*"
       ],
       "matches": [
         "<all_urls>"

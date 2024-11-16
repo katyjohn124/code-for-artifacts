@@ -280,27 +280,53 @@
             <h2>使用教程 Usage Guide</h2>
             <div class="content">
                 <div class="cn">
-                    本程序支持以下代码预览：
-                    • HTML+CSS+JS 组合代码：直接点击 "Preview Code" 按钮
-                    • React 组件（App.js + App.css）：依次点击 "Collect CSS" 和 "Collect JSX"，预览窗口将自动打开
-                    • Vue 单文件组件：直接点击 "Preview Code" 按钮
+                    本程序支持以下代码语言预览：<br>
+                    • HTML+CSS+JS 组合代码（HTML+CSS+JS 代码在一个框里）：直接点击 "Preview Code" 按钮<br>
+                    • React 组件（App.js + App.css）：依次点击 "Collect CSS" 和 "Collect JSX" 按钮，预览窗口将自动打开<br>
+                    • Vue 单文件组件：直接点击 "Preview Code" 按钮<br>
+                    • Python 代码：当你只是需要运行 Python 代码的结果时，直接点击 "Preview Code" 按钮即可；如果你是要让 AI 大语言模型生成可视化渲染 UI 和交互的 Python
+                    代码时，你就需要用到以下提示（prompt）去提醒 AI 生成合适的 Python 代码才能在我的项目中渲染 UI 和实时交互：<br>
+                    只需要用纯 Python 代码文件来编写一个某可交互性的项目或者小游戏。记住：<br>
+                    请生成一个可以在浏览器中通过 PyScript 和 Pyodide 运行的 Python 代码示例，代码需要符合以下要求：<br>
+                    1. 避免使用 input() 和 print() 函数，因为这些函数在浏览器环境中无法正常工作。<br>
+                    2. 使用 HTML 元素和事件处理器，通过在 Python 中创建和操作 HTML 元素，实现图形界面和用户交互。<br>
+                    3. 使用 pyodide.ffi.create_proxy 确保事件回调函数在 JavaScript 和 Python 间正确传递。<br>
+                    4. 代码应包含一个简单的 Python 函数或类，并在浏览器中输出结果。<br>
+                    5. 确保代码可以在 <py-script> 标签内运行，并且可以在浏览器中实时交互。<br>
                 </div>
                 <div class="en">
-                    This extension supports preview for:
-                    • HTML+CSS+JS combination: Click "Preview Code" directly
+                    This extension supports preview for:<br>
+                    • HTML+CSS+JS combination (HTML+CSS+JS code in one block): Click "Preview Code" directly<br>
                     • React components (App.js + App.css): Click "Collect CSS" then "Collect JSX", preview window will
-                    open automatically
-                    • Vue single-file components: Click "Preview Code" directly
+                    open automatically<br>
+                    • Vue single-file components: Click "Preview Code" directly<br>
+                    • Python code: When you only need to run the result of Python code, just click the "Preview Code"
+                    button; if you want the AI large language model to generate Python code for visual rendering UI and
+                    interaction, you need to use the following prompt to remind the AI to generate suitable Python code
+                    that can render UI and interact in my project:<br>
+                    Just use a pure Python code file to write an interactive project or game. Remember:<br>
+                    Please generate a Python code example that can run in the browser through PyScript and Pyodide, and
+                    the code needs to meet the following requirements:<br>
+                    1. Avoid using input() and print() functions, as these functions do not work properly in the browser
+                    environment.<br>
+                    2. Use HTML elements and event handlers to create and manipulate HTML elements in Python to achieve
+                    graphical interface and user interaction.<br>
+                    3. Use pyodide.ffi.create_proxy to ensure that event callback functions are correctly passed between
+                    JavaScript and Python.<br>
+                    4. The code should include a simple Python function or class and output the result in the
+                    browser.<br>
+                    5. Ensure that the code can run within the <py-script> tag and interact in real-time in the
+                        browser.<br>
                 </div>
 
                 <div class="warning">
                     <div class="cn">
-                        ⚠️ 温馨提示：目前在预览新生成的代码时需要刷新页面以确保正常渲染。建议在提问时详细描述需求，以便一次性生成完整代码。此问题正在修复中，敬请期待。
+                        ⚠️ 温馨提示：目前预览功能已经解决了新生成代码时需要刷新页面才能正确渲染的问题。意思就是当 AI 生成新代码时，不再需要刷新网页就可以直接进行预览代码和交互了。
                     </div>
                     <div class="en">
-                        ⚠️ Note: Currently, please refresh the page before previewing newly generated code. For better
-                        experience, provide detailed requirements in your prompt. This issue is being addressed, stay
-                        tuned.
+                        ⚠️ Note: The preview function has now resolved the issue where the page needed to be refreshed
+                        to render newly generated code correctly. This means that when the AI generates new code, you no
+                        longer need to refresh the page to preview and interact with the code directly.
                     </div>
                 </div>
             </div>
