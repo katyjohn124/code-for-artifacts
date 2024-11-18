@@ -4,7 +4,7 @@
 
 [English](#english) | [中文](#chinese)
 
-[![项目演示视频](https://img.youtube.com/vi/zQ-aICttHVA/0.jpg)](https://youtu.be/zQ-aICttHVA)
+[![项目演示视频](https://img.youtube.com/vi/_kIeHIT7Rsw/0.jpg)](https://youtu.be/_kIeHIT7Rsw)
 
 
 ## 目录 (Contents)
